@@ -1,0 +1,55 @@
+---
+import { reviews } from '../data/reviews';
+---
+
+<section class="py-20 px-4" style="background: #111111;">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16">
+      <h2 class="font-syne font-black text-4xl md:text-5xl text-white mb-4">
+        Lo que dicen <span style="color: #FF4D00;">nuestros clientes</span>
+      </h2>
+      <div class="flex items-center justify-center gap-3 mt-4">
+        <span class="text-4xl font-black" style="color: #FFB800;">4.8</span>
+        <div>
+          <div class="text-xl">⭐⭐⭐⭐⭐</div>
+          <div class="text-white/50 text-sm">en Google Reviews</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {reviews.map(review => (
+        <div class="p-6 rounded-2xl border transition-all duration-300 hover:scale-[1.02] hover:border-orange-500/30"
+             style="background: #181818; border-color: rgba(255,255,255,0.08);">
+          <div class="flex gap-1 mb-4">
+            {Array.from({ length: review.rating }).map(() => (
+              <span style="color: #FFB800;">★</span>
+            ))}
+          </div>
+
+          <p class="text-white/70 text-sm leading-relaxed mb-6">"{review.comment}"</p>
+
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm"
+                 style="background: linear-gradient(135deg, #FF4D00, #FFB800);">
+              {review.avatar}
+            </div>
+            <div>
+              <div class="font-semibold text-white text-sm">{review.name}</div>
+              <div class="text-white/40 text-xs">{review.date}</div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="text-center mt-10">
+      <a href="https://www.google.com/search?q=cafe+doncar+trelew+rese%C3%B1as"
+         target="_blank"
+         class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium border transition-all hover:scale-105"
+         style="border-color: rgba(255,184,0,0.3); color: #FFB800; background: rgba(255,184,0,0.08);">
+        Ver todas las reseñas en Google →
+      </a>
+    </div>
+  </div>
+</section>

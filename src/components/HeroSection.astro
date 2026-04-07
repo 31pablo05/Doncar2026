@@ -1,0 +1,94 @@
+---
+import { siteConfig } from '../data/siteConfig';
+---
+
+<section class="relative min-h-screen flex items-center overflow-hidden" style="background: #0a0a0a;">
+  <!-- Fondo con gradiente y overlay -->
+  <div class="absolute inset-0">
+    <div class="absolute inset-0 opacity-20"
+         style="background: radial-gradient(ellipse at 30% 50%, #FF4D00 0%, transparent 60%),
+                            radial-gradient(ellipse at 70% 80%, #FFB800 0%, transparent 50%);">
+    </div>
+    <div class="absolute inset-0 opacity-5"
+         style="background-image: linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px);
+                background-size: 60px 60px;">
+    </div>
+  </div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-4 pt-24 pb-12 w-full">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+
+      <!-- Texto izquierda -->
+      <div class="space-y-6 animate-fade-in-up">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium"
+             style="border-color: rgba(255,77,0,0.4); background: rgba(255,77,0,0.1); color: #FFB800;">
+          ⭐ Artesanal desde 2020 — Trelew, Chubut
+        </div>
+
+        <h1 class="font-syne font-black text-5xl md:text-6xl lg:text-7xl leading-none">
+          <span class="text-white">Las mejores</span><br/>
+          <span style="color: #FF4D00;">Hamburguesas</span><br/>
+          <span class="text-white/90">& Pizzas</span>
+        </h1>
+
+        <p class="text-white/60 text-lg max-w-md leading-relaxed">
+          Recetas propias, ingredientes frescos, elaboración 100% casera.
+          Pedí por WhatsApp y recibí en tu puerta.
+        </p>
+
+        <!-- CTAs -->
+        <div class="flex flex-wrap gap-4">
+          <a href="#menu"
+             class="px-8 py-4 rounded-xl font-bold text-white text-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+             style="background: linear-gradient(135deg, #FF4D00, #FFB800);">
+            Ver Menú 🍔
+          </a>
+          <a href={`https://wa.me/${siteConfig.whatsapp}?text=${encodeURIComponent('¡Hola! Quiero hacer un pedido 😊')}`}
+             target="_blank"
+             class="px-8 py-4 rounded-xl font-bold border transition-all duration-300 hover:scale-105"
+             style="border-color: rgba(255,255,255,0.2); color: white; background: rgba(255,255,255,0.05);">
+            WhatsApp 💬
+          </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="flex gap-8 pt-4">
+          {[
+            { num: '4.8★', label: 'Google Reviews' },
+            { num: '+500', label: 'Pedidos/mes' },
+            { num: '4 años', label: 'En Trelew' },
+          ].map(stat => (
+            <div>
+              <div class="font-syne font-black text-2xl" style="color: #FFB800;">{stat.num}</div>
+              <div class="text-white/50 text-sm">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Imagen derecha -->
+      <div class="hidden lg:flex justify-center items-center animate-slide-in-right">
+        <div class="relative w-96 h-96">
+          <div class="absolute inset-0 rounded-full blur-3xl opacity-30"
+               style="background: radial-gradient(circle, #FF4D00, transparent 70%);">
+          </div>
+          <img
+            src="/images/burgerclásica.jpg"
+            alt="Hamburguesa Café Doncar"
+            class="relative z-10 w-full h-full object-cover rounded-2xl shadow-2xl"
+            onerror="this.src='/placeholder.svg?text=Doncar'"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flecha scroll -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+    <a href="#menu" class="text-white/30 hover:text-white/60 transition-colors">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 5v14M5 12l7 7 7-7"/>
+      </svg>
+    </a>
+  </div>
+</section>

@@ -1,0 +1,86 @@
+---
+import { siteConfig } from '../data/siteConfig';
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-white/5">
+  <!-- Sub-barra de estado abierto/cerrado -->
+  <div id="status-bar" class="hidden text-center text-sm py-1.5 font-medium transition-all"></div>
+
+  <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
+    <!-- Logo -->
+    <a href="/" class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-black text-lg"
+           style="background: linear-gradient(135deg, #FF4D00, #FFB800);">
+        D
+      </div>
+      <span class="font-syne font-black text-xl text-white hidden sm:block">
+        Café <span style="color: #FF4D00;">Doncar</span>
+      </span>
+    </a>
+
+    <!-- Nav Desktop -->
+    <nav class="hidden md:flex items-center gap-8">
+      {[
+        { href: '#inicio', label: 'Inicio' },
+        { href: '#menu', label: 'Menú' },
+        { href: '#nosotros', label: 'Nosotros' },
+        { href: '#horarios', label: 'Horarios' },
+        { href: '#resenas', label: 'Reseñas' },
+      ].map(link => (
+        <a href={link.href}
+           class="text-white/70 hover:text-white text-sm font-medium transition-colors duration-200 hover:text-orange-400">
+          {link.label}
+        </a>
+      ))}
+    </nav>
+
+    <!-- Carrito -->
+    <button
+      id="cart-btn"
+      onclick="document.dispatchEvent(new CustomEvent('cart:open'))"
+      class="relative flex items-center gap-2 px-4 py-2 rounded-xl text-white font-semibold text-sm transition-all"
+      style="background: linear-gradient(135deg, #FF4D00, #FFB800);"
+    >
+      🛒 <span>Pedido</span>
+      <span
+        id="cart-badge"
+        class="hidden absolute -top-2 -right-2 w-5 h-5 bg-white text-black text-xs font-black rounded-full items-center justify-center"
+      ></span>
+    </button>
+  </div>
+</header>
+
+<script>
+  document.addEventListener('cart:update', (e: any) => {
+    const badge = document.getElementById('cart-badge');
+    if (!badge) return;
+    const count = e.detail?.count ?? 0;
+    if (count > 0) {
+      badge.textContent = String(count);
+      badge.classList.remove('hidden');
+      badge.classList.add('flex');
+    } else {
+      badge.classList.add('hidden');
+      badge.classList.remove('flex');
+    }
+  });
+
+  function checkBusinessStatus() {
+    const bar = document.getElementById('status-bar');
+    if (!bar) return;
+    const now = new Date();
+    const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
+    const argTime = new Date(utcMs - (3 * 3600000));
+    const h = argTime.getHours();
+    const m = argTime.getMinutes();
+    const totalMin = h * 60 + m;
+
+    const isOpen = totalMin >= 18 * 60 || totalMin < 30;
+    bar.textContent = isOpen ? '🟢 Abierto ahora — Pedidos por WhatsApp' : '🔴 Cerrado — Abrimos a las 18:00 hs';
+    bar.style.background = isOpen ? 'rgba(34,197,94,0.15)' : 'rgba(239,68,68,0.15)';
+    bar.style.color = isOpen ? '#86efac' : '#fca5a5';
+    bar.classList.remove('hidden');
+  }
+
+  checkBusinessStatus();
+</script>

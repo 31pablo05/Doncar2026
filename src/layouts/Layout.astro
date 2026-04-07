@@ -1,0 +1,67 @@
+﻿---
+import '../styles/global.css';
+import { siteConfig } from '../data/siteConfig';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = `${siteConfig.name} — ${siteConfig.tagline}`,
+  description = siteConfig.description,
+} = Astro.props;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": siteConfig.name,
+  "description": siteConfig.description,
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Pellegrini 1624",
+    "addressLocality": "Trelew",
+    "addressRegion": "Chubut",
+    "addressCountry": "AR"
+  },
+  "telephone": siteConfig.phone,
+  "url": siteConfig.url,
+  "servesCuisine": ["Hamburguesas", "Pizzas", "Comida r\u00e1pida"],
+  "openingHours": "Mo-Su 18:00-00:30",
+  "priceRange": "$$",
+  "image": `${siteConfig.url}/images/logo.png`
+};
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#FF4D00" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={siteConfig.url} />
+    <meta property="og:image" content={`${siteConfig.url}/og-image.jpg`} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <link rel="canonical" href={siteConfig.url} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <title>{title}</title>
+
+    <!-- Schema.org -->
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
