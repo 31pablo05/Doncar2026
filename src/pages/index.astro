@@ -11,6 +11,7 @@ import ReviewsSection from '../components/ReviewsSection.astro';
 import Footer from '../components/Footer.astro';
 import { menuItems } from '../data/menuItems';
 import { categories } from '../data/categories';
+import { siteConfig } from '../data/siteConfig';
 ---
 
 <Layout>
@@ -32,7 +33,7 @@ import { categories } from '../data/categories';
         </p>
       </div>
       <HowToOrder />
-      <MenuSection client:visible menuItems={menuItems} categories={categories} />
+      <MenuSection client:load menuItems={menuItems} categories={categories} whatsappNumber={siteConfig.whatsapp} />
     </section>
 
     <section id="nosotros">

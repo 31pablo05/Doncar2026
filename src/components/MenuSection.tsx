@@ -3,19 +3,24 @@ import type { MenuItem } from '../data/menuItems';
 
 interface CartItem extends MenuItem {
   quantity: number;
+  selectedSize?: string;
+  cartKey: string;
 }
 
 interface Props {
   menuItems: MenuItem[];
   categories: { id: string; label: string; emoji: string }[];
+  whatsappNumber: string;
 }
 
-export default function MenuSection({ menuItems, categories }: Props) {
+export default function MenuSection({ menuItems, categories, whatsappNumber }: Props) {
   const [selectedCategory, setSelectedCategory] = useState('Todos');
   const [searchTerm, setSearchTerm] = useState('');
   const [cart, setCart] = useState<CartItem[]>(() => {
     try {
-      return JSON.parse(localStorage.getItem('doncar-cart') || '[]');
+      const stored = JSON.parse(localStorage.getItem('doncar-cart') || '[]');
+      // Filter out stale entries from old cart format that lack cartKey
+      return stored.filter((i: any) => i.cartKey);
     } catch {
       return [];
     }
@@ -28,6 +33,7 @@ export default function MenuSection({ menuItems, categories }: Props) {
     reference: '',
     notes: '',
   });
+  const [formErrors, setFormErrors] = useState({ name: false, address: false });
 
   useEffect(() => {
     localStorage.setItem('doncar-cart', JSON.stringify(cart));
@@ -42,26 +48,27 @@ export default function MenuSection({ menuItems, categories }: Props) {
     return () => document.removeEventListener('cart:open', open);
   }, []);
 
-  function addToCart(item: MenuItem) {
+  function addToCart(item: MenuItem, size: string, price: number) {
+    const cartKey = `${item.id}-${size}`;
     setCart(prev => {
-      const existing = prev.find(i => i.id === item.id);
+      const existing = prev.find(i => i.cartKey === cartKey);
       if (existing) {
-        return prev.map(i => i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i);
+        return prev.map(i => i.cartKey === cartKey ? { ...i, quantity: i.quantity + 1 } : i);
       }
-      return [...prev, { ...item, quantity: 1 }];
+      return [...prev, { ...item, price, quantity: 1, selectedSize: size, cartKey }];
     });
   }
 
-  function updateQuantity(id: number, q: number) {
+  function updateQuantity(cartKey: string, q: number) {
     if (q <= 0) {
-      removeFromCart(id);
+      removeFromCart(cartKey);
     } else {
-      setCart(prev => prev.map(i => i.id === id ? { ...i, quantity: q } : i));
+      setCart(prev => prev.map(i => i.cartKey === cartKey ? { ...i, quantity: q } : i));
     }
   }
 
-  function removeFromCart(id: number) {
-    setCart(prev => prev.filter(i => i.id !== id));
+  function removeFromCart(cartKey: string) {
+    setCart(prev => prev.filter(i => i.cartKey !== cartKey));
   }
 
   function getTotalPrice() {
@@ -73,9 +80,19 @@ export default function MenuSection({ menuItems, categories }: Props) {
   }
 
   function sendWhatsAppOrder() {
-    if (!orderForm.name.trim() || !orderForm.address.trim()) return;
+    const errors = {
+      name: !orderForm.name.trim(),
+      address: !orderForm.address.trim(),
+    };
+    if (errors.name || errors.address) {
+      setFormErrors(errors);
+      return;
+    }
 
-    const lines = cart.map(i => `• ${i.name} x${i.quantity} — $${i.price * i.quantity}`).join('\n');
+    const lines = cart.map(i => {
+      const sizeLabel = i.selectedSize && i.selectedSize !== 'Único' ? ` (${i.selectedSize})` : '';
+      return `• ${i.name}${sizeLabel} x${i.quantity} — $${i.price * i.quantity}`;
+    }).join('\n');
     const total = getTotalPrice();
 
     const msg = encodeURIComponent(
@@ -91,9 +108,10 @@ export default function MenuSection({ menuItems, categories }: Props) {
       `¡Gracias por elegir Café Doncar! 🚀`
     );
 
-    window.open(`https://wa.me/5492804518716?text=${msg}`, '_blank');
+    window.open(`https://wa.me/${whatsappNumber}?text=${msg}`, '_blank');
     setCart([]);
     setIsCartOpen(false);
+    setFormErrors({ name: false, address: false });
     setOrderForm({ name: '', address: '', payment: 'Efectivo', reference: '', notes: '' });
   }
 
@@ -173,16 +191,63 @@ export default function MenuSection({ menuItems, categories }: Props) {
               </div>
               <p className="text-white/40 text-xs mb-3 line-clamp-2">{item.description}</p>
 
-              <div className="flex items-center justify-between">
-                <span className="font-black text-lg" style={{ color: '#FFB800' }}>${item.price}</span>
-                <button
-                  onClick={() => addToCart(item)}
-                  className="px-4 py-2 rounded-xl text-white text-sm font-bold transition-all hover:scale-105"
-                  style={{ background: 'linear-gradient(135deg, #FF4D00, #FFB800)' }}
-                >
-                  + Agregar
-                </button>
-              </div>
+              {item.priceDouble && !(item.sizes && item.sizes.length > 1) && (
+                <p className="text-white/40 text-xs mb-2">También en Doble: ${item.priceDouble}</p>
+              )}
+              {item.priceExtra && !(item.sizes && item.sizes.length > 1) && (
+                <p className="text-white/40 text-xs mb-2">800g: ${item.priceExtra}</p>
+              )}
+
+              {item.sizes && item.sizes.length > 1 ? (
+                <div className="flex gap-2 mt-2">
+                  {item.priceDouble !== undefined ? (
+                    <>
+                      <button
+                        onClick={() => addToCart(item, 'Simple', item.price)}
+                        className="flex-1 py-2 rounded-xl text-white text-xs font-bold transition-all hover:scale-105"
+                        style={{ background: 'linear-gradient(135deg, #FF4D00, #FFB800)' }}
+                      >
+                        Simple ${item.price}
+                      </button>
+                      <button
+                        onClick={() => addToCart(item, 'Doble', item.priceDouble!)}
+                        className="flex-1 py-2 rounded-xl text-white text-xs font-bold transition-all hover:scale-105"
+                        style={{ background: 'linear-gradient(135deg, #FF4D00, #FFB800)' }}
+                      >
+                        Doble ${item.priceDouble}
+                      </button>
+                    </>
+                  ) : item.priceExtra !== undefined ? (
+                    <>
+                      <button
+                        onClick={() => addToCart(item, item.sizes![0], item.price)}
+                        className="flex-1 py-2 rounded-xl text-white text-xs font-bold transition-all hover:scale-105"
+                        style={{ background: 'linear-gradient(135deg, #FF4D00, #FFB800)' }}
+                      >
+                        {item.sizes![0]} ${item.price}
+                      </button>
+                      <button
+                        onClick={() => addToCart(item, item.sizes![1], item.priceExtra!)}
+                        className="flex-1 py-2 rounded-xl text-white text-xs font-bold transition-all hover:scale-105"
+                        style={{ background: 'linear-gradient(135deg, #FF4D00, #FFB800)' }}
+                      >
+                        {item.sizes![1]} ${item.priceExtra}
+                      </button>
+                    </>
+                  ) : null}
+                </div>
+              ) : (
+                <div className="flex items-center justify-between mt-2">
+                  <span className="font-black text-lg" style={{ color: '#FFB800' }}>${item.price}</span>
+                  <button
+                    onClick={() => addToCart(item, 'Único', item.price)}
+                    className="px-4 py-2 rounded-xl text-white text-sm font-bold transition-all hover:scale-105"
+                    style={{ background: 'linear-gradient(135deg, #FF4D00, #FFB800)' }}
+                  >
+                    + Agregar
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         ))}
@@ -233,17 +298,20 @@ export default function MenuSection({ menuItems, categories }: Props) {
                   {/* Items */}
                   {cart.map(item => (
                     <div
-                      key={item.id}
+                      key={item.cartKey}
                       className="flex items-center gap-3 p-3 rounded-xl"
                       style={{ background: 'rgba(255,255,255,0.05)' }}
                     >
                       <div className="flex-1 min-w-0">
                         <p className="text-white text-sm font-medium truncate">{item.name}</p>
+                        {item.selectedSize && item.selectedSize !== 'Único' && (
+                          <p className="text-white/50 text-xs">{item.selectedSize}</p>
+                        )}
                         <p className="font-bold" style={{ color: '#FFB800' }}>${item.price}</p>
                       </div>
                       <div className="flex items-center gap-2">
                         <button
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          onClick={() => updateQuantity(item.cartKey, item.quantity - 1)}
                           className="w-7 h-7 rounded-lg text-white font-bold flex items-center justify-center"
                           style={{ background: 'rgba(255,77,0,0.3)' }}
                         >
@@ -251,7 +319,7 @@ export default function MenuSection({ menuItems, categories }: Props) {
                         </button>
                         <span className="text-white font-bold w-5 text-center">{item.quantity}</span>
                         <button
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          onClick={() => updateQuantity(item.cartKey, item.quantity + 1)}
                           className="w-7 h-7 rounded-lg text-white font-bold flex items-center justify-center"
                           style={{ background: 'rgba(255,184,0,0.3)' }}
                         >
@@ -259,7 +327,7 @@ export default function MenuSection({ menuItems, categories }: Props) {
                         </button>
                       </div>
                       <button
-                        onClick={() => removeFromCart(item.id)}
+                        onClick={() => removeFromCart(item.cartKey)}
                         className="text-white/30 hover:text-red-400 ml-1"
                       >
                         🗑
@@ -282,23 +350,35 @@ export default function MenuSection({ menuItems, categories }: Props) {
                   <div className="space-y-4 pt-2">
                     <h4 className="font-syne font-bold text-white">Datos del pedido</h4>
 
-                    <input
-                      type="text"
-                      placeholder="Tu nombre *"
-                      value={orderForm.name}
-                      onChange={e => setOrderForm(f => ({ ...f, name: e.target.value }))}
-                      className="w-full px-4 py-3 rounded-xl text-white placeholder-white/30 border outline-none"
-                      style={{ background: '#1a1a1a', borderColor: 'rgba(255,255,255,0.1)' }}
-                    />
+                    <div>
+                      <input
+                        type="text"
+                        placeholder="Tu nombre *"
+                        value={orderForm.name}
+                        onChange={e => {
+                          setOrderForm(f => ({ ...f, name: e.target.value }));
+                          if (formErrors.name) setFormErrors(f => ({ ...f, name: false }));
+                        }}
+                        className="w-full px-4 py-3 rounded-xl text-white placeholder-white/30 border outline-none"
+                        style={{ background: '#1a1a1a', borderColor: formErrors.name ? 'rgba(255,77,0,0.8)' : 'rgba(255,255,255,0.1)' }}
+                      />
+                      {formErrors.name && <p className="text-xs mt-1" style={{ color: '#FF4D00' }}>Este campo es obligatorio</p>}
+                    </div>
 
-                    <input
-                      type="text"
-                      placeholder="Dirección de entrega *"
-                      value={orderForm.address}
-                      onChange={e => setOrderForm(f => ({ ...f, address: e.target.value }))}
-                      className="w-full px-4 py-3 rounded-xl text-white placeholder-white/30 border outline-none"
-                      style={{ background: '#1a1a1a', borderColor: 'rgba(255,255,255,0.1)' }}
-                    />
+                    <div>
+                      <input
+                        type="text"
+                        placeholder="Dirección de entrega *"
+                        value={orderForm.address}
+                        onChange={e => {
+                          setOrderForm(f => ({ ...f, address: e.target.value }));
+                          if (formErrors.address) setFormErrors(f => ({ ...f, address: false }));
+                        }}
+                        className="w-full px-4 py-3 rounded-xl text-white placeholder-white/30 border outline-none"
+                        style={{ background: '#1a1a1a', borderColor: formErrors.address ? 'rgba(255,77,0,0.8)' : 'rgba(255,255,255,0.1)' }}
+                      />
+                      {formErrors.address && <p className="text-xs mt-1" style={{ color: '#FF4D00' }}>Este campo es obligatorio</p>}
+                    </div>
 
                     <input
                       type="text"
@@ -341,8 +421,7 @@ export default function MenuSection({ menuItems, categories }: Props) {
 
                     <button
                       onClick={sendWhatsAppOrder}
-                      disabled={!orderForm.name.trim() || !orderForm.address.trim()}
-                      className="w-full py-4 rounded-xl font-black text-white text-lg transition-all hover:scale-[1.02] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
+                      className="w-full py-4 rounded-xl font-black text-white text-lg transition-all hover:scale-[1.02]"
                       style={{ background: 'linear-gradient(135deg, #25D366, #128C7E)' }}
                     >
                       💬 Enviar pedido por WhatsApp

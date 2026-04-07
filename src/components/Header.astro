@@ -34,6 +34,15 @@ import { siteConfig } from '../data/siteConfig';
       ))}
     </nav>
 
+    <!-- Hamburger (mobile only) -->
+    <button
+      id="mobile-menu-btn"
+      class="md:hidden flex items-center justify-center w-10 h-10 text-white/70 hover:text-white transition-colors"
+      aria-label="Abrir menú"
+    >
+      <span id="hamburger-icon" class="text-xl">☰</span>
+    </button>
+
     <!-- Carrito -->
     <button
       id="cart-btn"
@@ -47,6 +56,27 @@ import { siteConfig } from '../data/siteConfig';
         class="hidden absolute -top-2 -right-2 w-5 h-5 bg-white text-black text-xs font-black rounded-full items-center justify-center"
       ></span>
     </button>
+  </div>
+
+  <!-- Mobile nav panel -->
+  <div
+    id="mobile-nav"
+    class="hidden md:hidden bg-black/95 backdrop-blur-md border-b border-white/5"
+  >
+    <nav class="flex flex-col py-2 px-4">
+      {[
+        { href: '#inicio', label: 'Inicio' },
+        { href: '#menu', label: 'Menú' },
+        { href: '#nosotros', label: 'Nosotros' },
+        { href: '#horarios', label: 'Horarios' },
+        { href: '#resenas', label: 'Reseñas' },
+      ].map(link => (
+        <a href={link.href}
+           class="mobile-nav-link text-white/70 hover:text-white py-3 text-sm font-medium transition-colors border-b border-white/5 last:border-0">
+          {link.label}
+        </a>
+      ))}
+    </nav>
   </div>
 </header>
 
@@ -68,19 +98,50 @@ import { siteConfig } from '../data/siteConfig';
   function checkBusinessStatus() {
     const bar = document.getElementById('status-bar');
     if (!bar) return;
+
+    // Obtener hora actual en Argentina (UTC-3) de forma robusta
     const now = new Date();
-    const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
-    const argTime = new Date(utcMs - (3 * 3600000));
+    const argStr = now.toLocaleString('en-US', { timeZone: 'America/Argentina/Buenos_Aires' });
+    const argTime = new Date(argStr);
     const h = argTime.getHours();
     const m = argTime.getMinutes();
     const totalMin = h * 60 + m;
 
-    const isOpen = totalMin >= 18 * 60 || totalMin < 30;
-    bar.textContent = isOpen ? '🟢 Abierto ahora — Pedidos por WhatsApp' : '🔴 Cerrado — Abrimos a las 18:00 hs';
-    bar.style.background = isOpen ? 'rgba(34,197,94,0.15)' : 'rgba(239,68,68,0.15)';
-    bar.style.color = isOpen ? '#86efac' : '#fca5a5';
+    // Abierto: desde 18:00 (1080 min) hasta 00:30 (30 min del día siguiente)
+    const isOpen = totalMin >= 1080 || totalMin < 30;
+
+    bar.textContent = isOpen
+      ? '🟢 Abierto ahora — Pedidos por WhatsApp'
+      : '🔴 Cerrado — Abrimos a las 18:00 hs';
+    bar.style.background = isOpen
+      ? 'rgba(34,197,94,0.15)'
+      : 'rgba(239,68,68,0.15)';
+    bar.style.color = isOpen ? '#4ade80' : '#f87171';
     bar.classList.remove('hidden');
   }
 
   checkBusinessStatus();
+
+  // Mobile menu toggle
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileNav = document.getElementById('mobile-nav');
+  const hamburgerIcon = document.getElementById('hamburger-icon');
+
+  mobileMenuBtn?.addEventListener('click', () => {
+    const isOpen = !mobileNav?.classList.contains('hidden');
+    if (isOpen) {
+      mobileNav?.classList.add('hidden');
+      if (hamburgerIcon) hamburgerIcon.textContent = '☰';
+    } else {
+      mobileNav?.classList.remove('hidden');
+      if (hamburgerIcon) hamburgerIcon.textContent = '✕';
+    }
+  });
+
+  document.querySelectorAll('.mobile-nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileNav?.classList.add('hidden');
+      if (hamburgerIcon) hamburgerIcon.textContent = '☰';
+    });
+  });
 </script>
