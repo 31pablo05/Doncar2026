@@ -132,8 +132,10 @@ export default function MenuSection({ menuItems, categories, whatsappNumber }: P
           placeholder="Buscar productos..."
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
-          className="w-full px-4 py-3 rounded-xl text-white placeholder-white/40 border outline-none focus:border-orange-500/50"
-          style={{ background: '#181818', borderColor: 'rgba(255,255,255,0.1)' }}
+          className="w-full px-4 py-3 rounded-xl text-white placeholder-white/40 border outline-none transition-colors"
+          style={{ background: '#0f0f1a', borderColor: 'rgba(255,255,255,0.08)' }}
+          onFocus={e => (e.target.style.borderColor = 'rgba(0,229,255,0.5)')}
+          onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.08)')}
         />
       </div>
 
@@ -148,8 +150,9 @@ export default function MenuSection({ menuItems, categories, whatsappNumber }: P
             }`}
             style={{
               background: selectedCategory === cat.id
-                ? 'linear-gradient(135deg, #FF4D00, #FFB800)'
+                ? 'linear-gradient(135deg, #00E5FF, #B44FFF)'
                 : 'rgba(255,255,255,0.05)',
+              color: selectedCategory === cat.id ? '#070710' : 'rgba(255,255,255,0.6)',
             }}
           >
             <span>{cat.emoji}</span> {cat.label}
@@ -157,13 +160,27 @@ export default function MenuSection({ menuItems, categories, whatsappNumber }: P
         ))}
       </div>
 
+      {/* Banner informativo burgers */}
+      {(selectedCategory === 'Hamburguesas' || selectedCategory === 'Todos') && (
+        <div
+          className="rounded-xl px-4 py-2 mb-4 text-center text-xs font-semibold"
+          style={{
+            background: 'rgba(0,229,255,0.08)',
+            border: '1px solid rgba(0,229,255,0.2)',
+            color: '#00E5FF',
+          }}
+        >
+          💡 Todas las burgers admiten medallón extra por $4.000
+        </div>
+      )}
+
       {/* Grid de productos */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {filtered.map(item => (
           <div
             key={item.id}
-            className="rounded-2xl overflow-hidden border transition-all duration-300 hover:scale-[1.02] hover:border-orange-500/30"
-            style={{ background: '#181818', borderColor: 'rgba(255,255,255,0.08)' }}
+            className="rounded-2xl overflow-hidden border transition-all duration-300 hover:scale-[1.02] hover:border-cyan-400/25"
+            style={{ background: '#0f0f1a', borderColor: 'rgba(255,255,255,0.06)' }}
           >
             <div className="aspect-[4/3] overflow-hidden bg-gray-900">
               <img
@@ -183,7 +200,7 @@ export default function MenuSection({ menuItems, categories, whatsappNumber }: P
                 {item.popular && (
                   <span
                     className="text-xs px-2 py-0.5 rounded-full font-bold ml-2 flex-shrink-0"
-                    style={{ background: 'rgba(255,77,0,0.2)', color: '#FF4D00' }}
+                    style={{ background: 'rgba(0,229,255,0.15)', color: '#00E5FF' }}
                   >
                     Popular
                   </span>
@@ -192,10 +209,10 @@ export default function MenuSection({ menuItems, categories, whatsappNumber }: P
               <p className="text-white/40 text-xs mb-3 line-clamp-2">{item.description}</p>
 
               {item.priceDouble && !(item.sizes && item.sizes.length > 1) && (
-                <p className="text-white/40 text-xs mb-2">También en Doble: ${item.priceDouble}</p>
+                <p className="text-xs mb-2" style={{ color: '#B44FFF' }}>También en Doble: ${item.priceDouble}</p>
               )}
               {item.priceExtra && !(item.sizes && item.sizes.length > 1) && (
-                <p className="text-white/40 text-xs mb-2">800g: ${item.priceExtra}</p>
+                <p className="text-xs mb-2" style={{ color: '#B44FFF' }}>800g: ${item.priceExtra}</p>
               )}
 
               {item.sizes && item.sizes.length > 1 ? (
@@ -204,15 +221,15 @@ export default function MenuSection({ menuItems, categories, whatsappNumber }: P
                     <>
                       <button
                         onClick={() => addToCart(item, 'Simple', item.price)}
-                        className="flex-1 py-2 rounded-xl text-white text-xs font-bold transition-all hover:scale-105"
-                        style={{ background: 'linear-gradient(135deg, #FF4D00, #FFB800)' }}
+                        className="flex-1 py-2 rounded-xl text-xs font-bold transition-all hover:scale-[1.02]"
+                        style={{ background: 'rgba(0,229,255,0.12)', color: '#00E5FF', border: '1px solid rgba(0,229,255,0.3)' }}
                       >
                         Simple ${item.price}
                       </button>
                       <button
                         onClick={() => addToCart(item, 'Doble', item.priceDouble!)}
-                        className="flex-1 py-2 rounded-xl text-white text-xs font-bold transition-all hover:scale-105"
-                        style={{ background: 'linear-gradient(135deg, #FF4D00, #FFB800)' }}
+                        className="flex-1 py-2 rounded-xl text-xs font-bold transition-all hover:scale-[1.02]"
+                        style={{ background: 'rgba(180,79,255,0.12)', color: '#B44FFF', border: '1px solid rgba(180,79,255,0.3)' }}
                       >
                         Doble ${item.priceDouble}
                       </button>
@@ -221,15 +238,15 @@ export default function MenuSection({ menuItems, categories, whatsappNumber }: P
                     <>
                       <button
                         onClick={() => addToCart(item, item.sizes![0], item.price)}
-                        className="flex-1 py-2 rounded-xl text-white text-xs font-bold transition-all hover:scale-105"
-                        style={{ background: 'linear-gradient(135deg, #FF4D00, #FFB800)' }}
+                        className="flex-1 py-2 rounded-xl text-xs font-bold transition-all hover:scale-[1.02]"
+                        style={{ background: 'rgba(0,229,255,0.12)', color: '#00E5FF', border: '1px solid rgba(0,229,255,0.3)' }}
                       >
                         {item.sizes![0]} ${item.price}
                       </button>
                       <button
                         onClick={() => addToCart(item, item.sizes![1], item.priceExtra!)}
-                        className="flex-1 py-2 rounded-xl text-white text-xs font-bold transition-all hover:scale-105"
-                        style={{ background: 'linear-gradient(135deg, #FF4D00, #FFB800)' }}
+                        className="flex-1 py-2 rounded-xl text-xs font-bold transition-all hover:scale-[1.02]"
+                        style={{ background: 'rgba(180,79,255,0.12)', color: '#B44FFF', border: '1px solid rgba(180,79,255,0.3)' }}
                       >
                         {item.sizes![1]} ${item.priceExtra}
                       </button>
@@ -238,11 +255,11 @@ export default function MenuSection({ menuItems, categories, whatsappNumber }: P
                 </div>
               ) : (
                 <div className="flex items-center justify-between mt-2">
-                  <span className="font-black text-lg" style={{ color: '#FFB800' }}>${item.price}</span>
+                  <span className="font-black text-lg" style={{ color: '#00E5FF' }}>${item.price}</span>
                   <button
                     onClick={() => addToCart(item, 'Único', item.price)}
-                    className="px-4 py-2 rounded-xl text-white text-sm font-bold transition-all hover:scale-105"
-                    style={{ background: 'linear-gradient(135deg, #FF4D00, #FFB800)' }}
+                    className="px-4 py-2 rounded-xl text-xs font-bold transition-all hover:scale-[1.02]"
+                    style={{ background: 'rgba(0,229,255,0.12)', color: '#00E5FF', border: '1px solid rgba(0,229,255,0.3)' }}
                   >
                     + Agregar
                   </button>
@@ -273,12 +290,12 @@ export default function MenuSection({ menuItems, categories, whatsappNumber }: P
           {/* Panel */}
           <div
             className="absolute right-0 top-0 h-full w-full max-w-md flex flex-col border-l"
-            style={{ background: '#111111', borderColor: 'rgba(255,255,255,0.1)' }}
+            style={{ background: '#0f0f1a', borderColor: 'rgba(0,229,255,0.12)' }}
           >
             {/* Header carrito */}
             <div
               className="flex items-center justify-between p-5 border-b"
-              style={{ borderColor: 'rgba(255,255,255,0.1)' }}
+              style={{ borderColor: 'rgba(0,229,255,0.12)' }}
             >
               <h3 className="font-syne font-black text-xl text-white">🛒 Tu Pedido</h3>
               <button onClick={() => setIsCartOpen(false)} className="text-white/50 hover:text-white text-2xl">
@@ -307,21 +324,21 @@ export default function MenuSection({ menuItems, categories, whatsappNumber }: P
                         {item.selectedSize && item.selectedSize !== 'Único' && (
                           <p className="text-white/50 text-xs">{item.selectedSize}</p>
                         )}
-                        <p className="font-bold" style={{ color: '#FFB800' }}>${item.price}</p>
+                        <p className="font-bold text-sm" style={{ color: '#00E5FF' }}>${item.price}</p>
                       </div>
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => updateQuantity(item.cartKey, item.quantity - 1)}
-                          className="w-7 h-7 rounded-lg text-white font-bold flex items-center justify-center"
-                          style={{ background: 'rgba(255,77,0,0.3)' }}
+                          className="w-7 h-7 rounded-lg font-bold flex items-center justify-center"
+                          style={{ background: 'rgba(180,79,255,0.2)', color: '#B44FFF' }}
                         >
                           −
                         </button>
                         <span className="text-white font-bold w-5 text-center">{item.quantity}</span>
                         <button
                           onClick={() => updateQuantity(item.cartKey, item.quantity + 1)}
-                          className="w-7 h-7 rounded-lg text-white font-bold flex items-center justify-center"
-                          style={{ background: 'rgba(255,184,0,0.3)' }}
+                          className="w-7 h-7 rounded-lg font-bold flex items-center justify-center"
+                          style={{ background: 'rgba(0,229,255,0.2)', color: '#00E5FF' }}
                         >
                           +
                         </button>
@@ -338,10 +355,10 @@ export default function MenuSection({ menuItems, categories, whatsappNumber }: P
                   {/* Total */}
                   <div
                     className="flex justify-between items-center py-3 border-t"
-                    style={{ borderColor: 'rgba(255,255,255,0.1)' }}
+                    style={{ borderColor: 'rgba(0,229,255,0.12)' }}
                   >
                     <span className="text-white font-bold">Total</span>
-                    <span className="font-black text-2xl" style={{ color: '#FFB800' }}>
+                    <span className="font-black text-2xl" style={{ color: '#00E5FF' }}>
                       ${getTotalPrice()}
                     </span>
                   </div>
@@ -359,10 +376,10 @@ export default function MenuSection({ menuItems, categories, whatsappNumber }: P
                           setOrderForm(f => ({ ...f, name: e.target.value }));
                           if (formErrors.name) setFormErrors(f => ({ ...f, name: false }));
                         }}
-                        className="w-full px-4 py-3 rounded-xl text-white placeholder-white/30 border outline-none"
-                        style={{ background: '#1a1a1a', borderColor: formErrors.name ? 'rgba(255,77,0,0.8)' : 'rgba(255,255,255,0.1)' }}
+                        className="w-full px-4 py-3 rounded-xl text-white placeholder-white/30 border outline-none transition-colors"
+                        style={{ background: '#161625', borderColor: formErrors.name ? 'rgba(224,64,251,0.8)' : 'rgba(255,255,255,0.08)' }}
                       />
-                      {formErrors.name && <p className="text-xs mt-1" style={{ color: '#FF4D00' }}>Este campo es obligatorio</p>}
+                      {formErrors.name && <p className="text-xs mt-1" style={{ color: '#E040FB' }}>Este campo es obligatorio</p>}
                     </div>
 
                     <div>
@@ -374,10 +391,10 @@ export default function MenuSection({ menuItems, categories, whatsappNumber }: P
                           setOrderForm(f => ({ ...f, address: e.target.value }));
                           if (formErrors.address) setFormErrors(f => ({ ...f, address: false }));
                         }}
-                        className="w-full px-4 py-3 rounded-xl text-white placeholder-white/30 border outline-none"
-                        style={{ background: '#1a1a1a', borderColor: formErrors.address ? 'rgba(255,77,0,0.8)' : 'rgba(255,255,255,0.1)' }}
+                        className="w-full px-4 py-3 rounded-xl text-white placeholder-white/30 border outline-none transition-colors"
+                        style={{ background: '#161625', borderColor: formErrors.address ? 'rgba(224,64,251,0.8)' : 'rgba(255,255,255,0.08)' }}
                       />
-                      {formErrors.address && <p className="text-xs mt-1" style={{ color: '#FF4D00' }}>Este campo es obligatorio</p>}
+                      {formErrors.address && <p className="text-xs mt-1" style={{ color: '#E040FB' }}>Este campo es obligatorio</p>}
                     </div>
 
                     <input
@@ -386,7 +403,7 @@ export default function MenuSection({ menuItems, categories, whatsappNumber }: P
                       value={orderForm.reference}
                       onChange={e => setOrderForm(f => ({ ...f, reference: e.target.value }))}
                       className="w-full px-4 py-3 rounded-xl text-white placeholder-white/30 border outline-none"
-                      style={{ background: '#1a1a1a', borderColor: 'rgba(255,255,255,0.1)' }}
+                      style={{ background: '#161625', borderColor: 'rgba(255,255,255,0.08)' }}
                     />
 
                     <div>
@@ -399,9 +416,9 @@ export default function MenuSection({ menuItems, categories, whatsappNumber }: P
                             className="flex-1 py-2 rounded-xl text-xs font-bold transition-all"
                             style={{
                               background: orderForm.payment === method
-                                ? 'linear-gradient(135deg, #FF4D00, #FFB800)'
+                                ? 'linear-gradient(135deg, #00E5FF, #B44FFF)'
                                 : 'rgba(255,255,255,0.05)',
-                              color: orderForm.payment === method ? 'black' : 'rgba(255,255,255,0.6)',
+                              color: orderForm.payment === method ? '#070710' : 'rgba(255,255,255,0.6)',
                             }}
                           >
                             {method === 'Efectivo' ? '💵' : method === 'Transferencia' ? '🏦' : '💙'} {method}
@@ -416,13 +433,13 @@ export default function MenuSection({ menuItems, categories, whatsappNumber }: P
                       onChange={e => setOrderForm(f => ({ ...f, notes: e.target.value }))}
                       rows={2}
                       className="w-full px-4 py-3 rounded-xl text-white placeholder-white/30 border outline-none resize-none"
-                      style={{ background: '#1a1a1a', borderColor: 'rgba(255,255,255,0.1)' }}
+                      style={{ background: '#161625', borderColor: 'rgba(255,255,255,0.08)' }}
                     />
 
                     <button
                       onClick={sendWhatsAppOrder}
-                      className="w-full py-4 rounded-xl font-black text-white text-lg transition-all hover:scale-[1.02]"
-                      style={{ background: 'linear-gradient(135deg, #25D366, #128C7E)' }}
+                      className="w-full py-4 rounded-xl font-black text-[#070710] text-lg transition-all hover:scale-[1.02]"
+                      style={{ background: 'linear-gradient(135deg, #00E5FF, #B44FFF)', boxShadow: '0 4px 20px rgba(0,229,255,0.2)' }}
                     >
                       💬 Enviar pedido por WhatsApp
                     </button>

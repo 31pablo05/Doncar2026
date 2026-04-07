@@ -5,12 +5,17 @@ export default {
     extend: {
       colors: {
         brand: {
-          black: '#0a0a0a',
+          black: '#070710',
           orange: '#FF4D00',
           gold: '#FFB800',
-          dark: '#111111',
-          card: '#181818',
-        }
+          dark: '#0f0f1a',
+          card: '#0f0f1a',
+        },
+        'neon-cyan':   '#00E5FF',
+        'neon-violet': '#B44FFF',
+        'neon-pink':   '#E040FB',
+        'surface':     '#0f0f1a',
+        'surface-2':   '#161625',
       },
       fontFamily: {
         syne: ['Syne', 'sans-serif'],

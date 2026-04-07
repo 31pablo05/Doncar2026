@@ -4,6 +4,20 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-bg:           #070710;
+  --color-surface:      #0f0f1a;
+  --color-surface-2:    #161625;
+  --color-neon-cyan:    #00E5FF;
+  --color-neon-violet:  #B44FFF;
+  --color-neon-pink:    #E040FB;
+  --color-text-primary:   #FFFFFF;
+  --color-text-secondary: rgba(255,255,255,0.65);
+  --color-text-muted:     rgba(255,255,255,0.35);
+  --gradient-brand: linear-gradient(135deg, #00E5FF 0%, #B44FFF 50%, #E040FB 100%);
+  --gradient-cta:   linear-gradient(135deg, #00E5FF, #B44FFF);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -15,12 +29,33 @@ html {
 }
 
 body {
-  background-color: #0a0a0a;
+  background-color: #070710;
   color: #ffffff;
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;
 }
 
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #111; }
-::-webkit-scrollbar-thumb { background: #FF4D00; border-radius: 3px; }
+::-webkit-scrollbar-track { background: #0f0f1a; }
+::-webkit-scrollbar-thumb { background: #00E5FF; border-radius: 3px; }
+
+.neon-text-cyan {
+  color: #00E5FF;
+  text-shadow: 0 0 20px rgba(0,229,255,0.5), 0 0 40px rgba(0,229,255,0.2);
+}
+.neon-text-violet {
+  color: #B44FFF;
+  text-shadow: 0 0 20px rgba(180,79,255,0.5), 0 0 40px rgba(180,79,255,0.2);
+}
+.neon-border {
+  border: 1px solid rgba(0,229,255,0.3);
+  box-shadow: 0 0 15px rgba(0,229,255,0.1), inset 0 0 15px rgba(0,229,255,0.03);
+}
+.neon-border-violet {
+  border: 1px solid rgba(180,79,255,0.3);
+  box-shadow: 0 0 15px rgba(180,79,255,0.1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .neon-text-cyan, .neon-text-violet { transition: text-shadow 0.2s; }
+}

@@ -2,24 +2,24 @@
 import ClockWidget from './ClockWidget';
 ---
 
-<section class="py-20 px-4" style="background: #0a0a0a;">
+<section class="py-20 px-4" style="background: #070710;">
   <div class="max-w-4xl mx-auto text-center">
     <h2 class="font-syne font-black text-4xl md:text-5xl text-white mb-4">
-      Horarios de <span style="color: #FF4D00;">Atención</span>
+      Horarios de <span style="color: #00E5FF;">Atención</span>
     </h2>
-    <div class="w-20 h-1 mx-auto rounded-full mb-12" style="background: linear-gradient(90deg, #FF4D00, #FFB800);"></div>
+    <div class="w-20 h-1 mx-auto rounded-full mb-12" style="background: linear-gradient(90deg, #00E5FF, #B44FFF);"></div>
 
     <!-- Reloj en vivo (React island mínimo) -->
     <ClockWidget client:idle />
 
     <!-- Info de horarios (estático) -->
     <div class="mt-10 grid sm:grid-cols-2 gap-6 max-w-xl mx-auto">
-      <div class="p-6 rounded-2xl border text-center" style="background: rgba(255,77,0,0.08); border-color: rgba(255,77,0,0.2);">
+      <div class="p-6 rounded-2xl border text-center" style="background: rgba(0,229,255,0.06); border-color: rgba(0,229,255,0.2);">
         <div class="text-3xl mb-2">🕕</div>
-        <div class="font-syne font-bold text-white text-lg">18:00 — 00:30 hs</div>
+        <div class="font-syne font-bold text-white text-lg" style="color: #00E5FF;">18:00 — 00:30 hs</div>
         <div class="text-white/50 text-sm mt-1">Lunes a Domingo</div>
       </div>
-      <div class="p-6 rounded-2xl border text-center" style="background: rgba(255,184,0,0.08); border-color: rgba(255,184,0,0.2);">
+      <div class="p-6 rounded-2xl border text-center" style="background: rgba(180,79,255,0.06); border-color: rgba(180,79,255,0.2);">
         <div class="text-3xl mb-2">🚀</div>
         <div class="font-syne font-bold text-white text-lg">Delivery & Retiro</div>
         <div class="text-white/50 text-sm mt-1">Pellegrini 1624, Trelew</div>

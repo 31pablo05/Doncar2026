@@ -2,93 +2,160 @@
 import { siteConfig } from '../data/siteConfig';
 ---
 
-<section class="relative min-h-screen flex items-center overflow-hidden" style="background: #0a0a0a;">
-  <!-- Fondo con gradiente y overlay -->
-  <div class="absolute inset-0">
-    <div class="absolute inset-0 opacity-20"
-         style="background: radial-gradient(ellipse at 30% 50%, #FF4D00 0%, transparent 60%),
-                            radial-gradient(ellipse at 70% 80%, #FFB800 0%, transparent 50%);">
-    </div>
-    <div class="absolute inset-0 opacity-5"
-         style="background-image: linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px);
-                background-size: 60px 60px;">
-    </div>
+<section id="hero" class="relative min-h-svh flex items-center overflow-hidden" style="background: #070710;">
+
+  <!-- ============================================================
+       BACKGROUND MOBILE: foto del cartel del local (B&W atmosférico)
+       Solo visible en < lg
+  ============================================================ -->
+  <div class="absolute inset-0 lg:hidden" aria-hidden="true">
+    <img
+      src="/images/hoy.jpg"
+      alt=""
+      class="w-full h-full object-cover object-center scale-105"
+      fetchpriority="high"
+    />
+    <!-- Gradiente: foto visible arriba, texto legible abajo -->
+    <div class="absolute inset-0"
+         style="background: linear-gradient(
+           to bottom,
+           rgba(7,7,16,0.25) 0%,
+           rgba(7,7,16,0.55) 40%,
+           rgba(7,7,16,0.88) 68%,
+           #070710 100%
+         );"></div>
+    <!-- Viñeta lateral izquierda para contraste del texto -->
+    <div class="absolute inset-0"
+         style="background: radial-gradient(ellipse at 20% 80%, rgba(0,229,255,0.08) 0%, transparent 60%);"></div>
   </div>
 
-  <div class="relative z-10 max-w-7xl mx-auto px-4 pt-24 pb-12 w-full">
-    <div class="grid lg:grid-cols-2 gap-12 items-center">
+  <!-- ============================================================
+       BACKGROUND DESKTOP: gradiente sutil + glow cyan y violeta
+       Solo visible en lg+
+  ============================================================ -->
+  <div class="absolute inset-0 hidden lg:block" aria-hidden="true">
+    <div class="absolute inset-0"
+         style="background:
+           radial-gradient(ellipse at 15% 60%, rgba(0,229,255,0.08) 0%, transparent 55%),
+           radial-gradient(ellipse at 85% 40%, rgba(180,79,255,0.06) 0%, transparent 50%);"></div>
+  </div>
 
-      <!-- Texto izquierda -->
-      <div class="space-y-6 animate-fade-in-up">
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium"
-             style="border-color: rgba(255,77,0,0.4); background: rgba(255,77,0,0.1); color: #FFB800;">
-          ⭐ Artesanal desde 2020 — Trelew, Chubut
+  <!-- ============================================================
+       CONTENIDO PRINCIPAL
+  ============================================================ -->
+  <div class="relative z-10 w-full max-w-7xl mx-auto px-5 sm:px-8">
+    <div class="lg:grid lg:grid-cols-[1fr_auto] lg:gap-16 lg:items-center min-h-svh lg:min-h-0 lg:py-20 flex flex-col justify-end pb-16 pt-28">
+
+      <!-- ── TEXTO ── -->
+      <div class="animate-fade-in-up space-y-7 max-w-xl">
+
+        <!-- Eyebrow pill -->
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide uppercase"
+             style="background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.30); color: rgba(0,229,255,0.9);">
+          <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background: #00E5FF;"></span>
+          🍔 Pizza & Food · 🍰 Cosas Ricas — Trelew, Chubut
         </div>
 
-        <h1 class="font-syne font-black text-5xl md:text-6xl lg:text-7xl leading-none">
-          <span class="text-white">Las mejores</span><br/>
-          <span style="color: #FF4D00;">Hamburguesas</span><br/>
-          <span class="text-white/90">& Pizzas</span>
+        <!-- Headline: mínimo, máximo impacto -->
+        <h1 class="font-syne font-black leading-[0.92] tracking-tight text-white">
+          <span class="block text-[clamp(3rem,9vw,5.5rem)]">Las mejores</span>
+          <span class="block text-[clamp(3rem,9vw,5.5rem)] neon-text-cyan"
+                style="background: linear-gradient(100deg, #00E5FF 10%, #B44FFF 90%);
+                       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+                       background-clip: text;">
+            Hamburguesas
+          </span>
+          <span class="block text-[clamp(2.4rem,7vw,4.2rem)] text-white/80">& Postres</span>
         </h1>
 
-        <p class="text-white/60 text-lg max-w-md leading-relaxed">
-          Recetas propias, ingredientes frescos, elaboración 100% casera.
+        <!-- Tagline: una sola línea -->
+        <p class="text-white/55 text-base sm:text-lg font-inter leading-snug">
+          Burgers, pizzas, sandwiches y postres artesanales.<br />
           Pedí por WhatsApp y recibí en tu puerta.
         </p>
 
         <!-- CTAs -->
-        <div class="flex flex-wrap gap-4">
-          <a href="#menu"
-             class="px-8 py-4 rounded-xl font-bold text-white text-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl"
-             style="background: linear-gradient(135deg, #FF4D00, #FFB800);">
-            Ver Menú 🍔
+        <div class="flex flex-col sm:flex-row gap-3 pt-1">
+          <a
+            href="#menu"
+            class="flex items-center justify-center gap-2 px-7 py-4 rounded-2xl font-bold text-[#070710] text-base transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl active:scale-95"
+            style="background: linear-gradient(135deg, #00E5FF, #B44FFF); box-shadow: 0 6px 24px rgba(0,229,255,0.28);"
+          >
+            Ver Menú <span class="text-lg">🍔</span>
           </a>
-          <a href={`https://wa.me/${siteConfig.whatsapp}?text=${encodeURIComponent('¡Hola! Quiero hacer un pedido 😊')}`}
-             target="_blank"
-             class="px-8 py-4 rounded-xl font-bold border transition-all duration-300 hover:scale-105"
-             style="border-color: rgba(255,255,255,0.2); color: white; background: rgba(255,255,255,0.05);">
-            WhatsApp 💬
+          <a
+            href={`https://wa.me/${siteConfig.whatsapp}?text=${encodeURIComponent('¡Hola! Quiero hacer un pedido 😊')}`}
+            target="_blank"
+            rel="noopener"
+            class="flex items-center justify-center gap-2 px-7 py-4 rounded-2xl font-bold text-base transition-all duration-300 hover:scale-[1.03] active:scale-95"
+            style="background: rgba(0,229,255,0.06); border: 1px solid rgba(0,229,255,0.30); color: #00E5FF; backdrop-filter: blur(8px);"
+          >
+            Pedir ahora <span class="text-lg">💬</span>
           </a>
         </div>
 
-        <!-- Stats -->
-        <div class="flex gap-8 pt-4">
-          {[
-            { num: '4.8★', label: 'Google Reviews' },
-            { num: '+500', label: 'Pedidos/mes' },
-            { num: '4 años', label: 'En Trelew' },
-          ].map(stat => (
-            <div>
-              <div class="font-syne font-black text-2xl" style="color: #FFB800;">{stat.num}</div>
-              <div class="text-white/50 text-sm">{stat.label}</div>
-            </div>
-          ))}
-        </div>
       </div>
 
-      <!-- Imagen derecha -->
-      <div class="hidden lg:flex justify-center items-center animate-slide-in-right">
-        <div class="relative w-96 h-96">
-          <div class="absolute inset-0 rounded-full blur-3xl opacity-30"
-               style="background: radial-gradient(circle, #FF4D00, transparent 70%);">
+      <!-- ── IMÁGENES (solo desktop lg+) ── -->
+      <div class="hidden lg:block animate-slide-in-right flex-shrink-0">
+        <div class="relative w-[380px] xl:w-[440px] h-[520px] xl:h-[580px]">
+
+          <!-- Imagen principal: burger -->
+          <div class="absolute top-0 right-0 w-[300px] xl:w-[340px] h-[370px] xl:h-[420px] rounded-3xl overflow-hidden shadow-2xl"
+               style="transform: rotate(2.5deg);
+                      box-shadow: 0 32px 64px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.07);">
+            <img
+              src="/images/burgerclásica.jpg"
+              alt="Hamburguesa Clásica Café Doncar"
+              class="w-full h-full object-cover hover:scale-[1.04] transition-transform duration-700 ease-out"
+              fetchpriority="high"
+            />
+            <!-- Overlay degradado sutil abajo -->
+            <div class="absolute bottom-0 left-0 right-0 h-24"
+                 style="background: linear-gradient(to top, rgba(10,10,10,0.5), transparent);"></div>
           </div>
-          <img
-            src="/images/burgerclásica.jpg"
-            alt="Hamburguesa Café Doncar"
-            class="relative z-10 w-full h-full object-cover rounded-2xl shadow-2xl"
-            onerror="this.src='/placeholder.svg?text=Doncar'"
-          />
+
+          <!-- Imagen secundaria: pizza, superpuesta abajo-izquierda -->
+          <div class="absolute bottom-0 left-0 w-[200px] xl:w-[230px] h-[220px] xl:h-[250px] rounded-2xl overflow-hidden shadow-2xl"
+               style="transform: rotate(-3deg);
+                      box-shadow: 0 24px 48px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.07);">
+            <img
+              src="/images/pizzacuatroquesos.jpg"
+              alt="Pizza Cuatro Quesos Café Doncar"
+              class="w-full h-full object-cover hover:scale-[1.06] transition-transform duration-700 ease-out"
+              loading="eager"
+            />
+          </div>
+
+          <!-- Badge flotante: "Artesanal" -->
+          <div class="absolute top-[200px] xl:top-[230px] left-2 xl:left-0 z-20
+                      flex items-center gap-2 px-3.5 py-2 rounded-full text-white text-xs font-bold"
+               style="background: rgba(7,7,16,0.85);
+                      border: 1px solid rgba(0,229,255,0.35);
+                      backdrop-filter: blur(12px);
+                      box-shadow: 0 8px 24px rgba(0,0,0,0.4);">
+            <span style="color: #00E5FF;">✦</span> 100% Artesanal
+          </div>
+
+          <!-- Glow detrás de las imágenes -->
+          <div class="absolute inset-0 -z-10 blur-3xl opacity-30"
+               style="background: radial-gradient(ellipse at 60% 40%, rgba(0,229,255,0.3), transparent 70%);"></div>
+
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Flecha scroll -->
-  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-    <a href="#menu" class="text-white/30 hover:text-white/60 transition-colors">
-      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+  <!-- Flecha scroll (ambas pantallas) -->
+  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10">
+    <a href="#menu"
+       class="flex flex-col items-center gap-1 group"
+       aria-label="Ir al menú">
+      <span class="text-white/25 text-[10px] font-inter tracking-widest uppercase group-hover:text-white/50 transition-colors">Menú</span>
+      <svg class="text-white/25 group-hover:text-white/50 transition-colors animate-bounce" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <path d="M12 5v14M5 12l7 7 7-7"/>
       </svg>
     </a>
   </div>
+
 </section>
