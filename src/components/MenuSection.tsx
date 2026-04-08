@@ -16,6 +16,7 @@ interface Props {
 export default function MenuSection({ menuItems, categories, whatsappNumber }: Props) {
   const [selectedCategory, setSelectedCategory] = useState('Todos');
   const [searchTerm, setSearchTerm] = useState('');
+  const [visibleCount, setVisibleCount] = useState(8);
   const [cart, setCart] = useState<CartItem[]>(() => {
     try {
       const stored = JSON.parse(localStorage.getItem('doncar-cart') || '[]');
@@ -34,6 +35,11 @@ export default function MenuSection({ menuItems, categories, whatsappNumber }: P
     notes: '',
   });
   const [formErrors, setFormErrors] = useState({ name: false, address: false });
+
+  // Reset visible count when category or search changes
+  useEffect(() => {
+    setVisibleCount(8);
+  }, [selectedCategory, searchTerm]);
 
   useEffect(() => {
     localStorage.setItem('doncar-cart', JSON.stringify(cart));
@@ -176,7 +182,7 @@ export default function MenuSection({ menuItems, categories, whatsappNumber }: P
 
       {/* Grid de productos */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {filtered.map(item => (
+        {filtered.slice(0, visibleCount).map(item => (
           <div
             key={item.id}
             className="rounded-2xl overflow-hidden border transition-all duration-300 hover:scale-[1.02] hover:border-cyan-400/25"
@@ -275,6 +281,46 @@ export default function MenuSection({ menuItems, categories, whatsappNumber }: P
         <div className="text-center py-16 text-white/40">
           <div className="text-4xl mb-4">🔍</div>
           <p>No encontramos productos para "{searchTerm}"</p>
+        </div>
+      )}
+
+      {/* Ver más / Ver menos */}
+      {filtered.length > 8 && (
+        <div className="flex flex-col items-center gap-2 mt-8">
+          <p className="text-white/30 text-xs">
+            Mostrando {Math.min(visibleCount, filtered.length)} de {filtered.length} productos
+          </p>
+          <div className="flex gap-3">
+            {visibleCount < filtered.length && (
+              <button
+                onClick={() => setVisibleCount(v => v + 8)}
+                className="flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-sm transition-all hover:scale-[1.03] active:scale-95"
+                style={{
+                  background: 'linear-gradient(135deg, #00E5FF, #B44FFF)',
+                  color: '#070710',
+                  boxShadow: '0 4px 20px rgba(0,229,255,0.25)',
+                }}
+              >
+                Ver más <span className="text-base">⬇️</span>
+              </button>
+            )}
+            {visibleCount > 8 && (
+              <button
+                onClick={() => {
+                  setVisibleCount(8);
+                  document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-sm transition-all hover:scale-[1.03] active:scale-95"
+                style={{
+                  background: 'rgba(255,255,255,0.05)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  color: 'rgba(255,255,255,0.5)',
+                }}
+              >
+                Ver menos ↑
+              </button>
+            )}
+          </div>
         </div>
       )}
 

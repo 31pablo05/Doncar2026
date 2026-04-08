@@ -163,79 +163,75 @@ import { siteConfig } from '../data/siteConfig';
           <div class="absolute inset-0 -z-10 blur-3xl opacity-60"
                style="background: radial-gradient(ellipse at 65% 35%, rgba(0,229,255,0.12), transparent 65%);"></div>
 
-          <!-- FILA SUPERIOR: Tartas (izquierda) + Pizza (derecha) -->
-
-          <!-- Tartas -->
-          <div class="absolute top-[10px] left-0 w-[235px] xl:w-[265px] h-[300px] xl:h-[340px] rounded-3xl overflow-hidden"
-               style="transform: rotate(-2.5deg);
-                      box-shadow: 0 32px 64px rgba(0,0,0,0.7), 0 0 0 1px rgba(224,64,251,0.2);">
+          <!-- TOP-LEFT: Tartas -->
+          <div class="absolute top-0 left-0 w-[238px] xl:w-[268px] h-[278px] xl:h-[308px] rounded-2xl overflow-hidden"
+               style="transform: rotate(-2deg);
+                      box-shadow: 0 24px 48px rgba(0,0,0,0.7), 0 0 0 1px rgba(224,64,251,0.2);">
             <img
               src="/images/tartas.jpg"
               alt="Tartas Delicias Cosas Ricas"
               class="object-cover w-full h-full hover:scale-[1.04] transition-transform duration-700 ease-out"
               loading="eager"
             />
-            <div class="absolute bottom-0 inset-x-0 h-16"
-                 style="background: linear-gradient(to top, rgba(7,7,16,0.55), transparent);"></div>
+            <div class="absolute bottom-0 inset-x-0 h-14"
+                 style="background: linear-gradient(to top, rgba(7,7,16,0.6), transparent);"></div>
           </div>
 
-          <!-- Pizza -->
-          <div class="absolute top-0 right-0 w-[235px] xl:w-[265px] h-[300px] xl:h-[340px] rounded-3xl overflow-hidden"
-               style="transform: rotate(2.5deg);
-                      box-shadow: 0 32px 64px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.07);">
+          <!-- TOP-RIGHT: Pizza -->
+          <div class="absolute top-0 right-0 w-[238px] xl:w-[268px] h-[278px] xl:h-[308px] rounded-2xl overflow-hidden"
+               style="transform: rotate(2deg);
+                      box-shadow: 0 24px 48px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.07);">
             <img
               src="/images/pizzacuatroquesos.jpg"
               alt="Pizza Cuatro Quesos Café Doncar"
               class="object-cover w-full h-full hover:scale-[1.04] transition-transform duration-700 ease-out"
               fetchpriority="high"
             />
-            <div class="absolute bottom-0 inset-x-0 h-16"
-                 style="background: linear-gradient(to top, rgba(7,7,16,0.55), transparent);"></div>
+            <div class="absolute bottom-0 inset-x-0 h-14"
+                 style="background: linear-gradient(to top, rgba(7,7,16,0.6), transparent);"></div>
           </div>
 
-          <!-- Logo flotando centrado entre las dos imágenes superiores -->
-          <div class="absolute top-[-16px] left-1/2 -translate-x-1/2 z-20 animate-fade-in-up pointer-events-none">
-            <img
-              src="/images/logo1comb.svg"
-              alt="Café Doncar Delicias"
-              class="w-[180px] xl:w-[210px] h-auto"
-              style="filter: drop-shadow(0 0 16px rgba(0,229,255,0.35)) drop-shadow(0 0 32px rgba(180,79,255,0.2));"
-            />
-          </div>
-
-          <!-- FILA INFERIOR: Burger + Brownie Oreo -->
-
-          <!-- Burger -->
-          <div class="absolute bottom-6 left-[30px] xl:left-[40px] w-[155px] xl:w-[175px] h-[175px] xl:h-[195px] rounded-2xl overflow-hidden"
-               style="transform: rotate(-3.5deg);
-                      box-shadow: 0 0 0 1px rgba(180,79,255,0.3), 0 20px 40px rgba(0,0,0,0.7);">
+          <!-- BOTTOM-LEFT: Burger -->
+          <div class="absolute bottom-0 left-0 w-[238px] xl:w-[268px] h-[278px] xl:h-[308px] rounded-2xl overflow-hidden"
+               style="transform: rotate(1.5deg);
+                      box-shadow: 0 24px 48px rgba(0,0,0,0.7), 0 0 0 1px rgba(180,79,255,0.25);">
             <img
               src="/images/burgerclásica.jpg"
               alt="Hamburguesa Café Doncar"
-              class="object-cover w-full h-full hover:scale-[1.05] transition-transform duration-700"
+              class="object-cover w-full h-full hover:scale-[1.04] transition-transform duration-700"
               loading="eager"
             />
-            <div class="absolute bottom-0 inset-x-0 h-12"
+            <div class="absolute bottom-0 inset-x-0 h-14"
                  style="background: linear-gradient(to top, rgba(7,7,16,0.6), transparent);"></div>
           </div>
 
-          <!-- Brownie Oreo -->
-          <div class="absolute bottom-2 right-[30px] xl:right-[40px] w-[155px] xl:w-[175px] h-[175px] xl:h-[195px] rounded-2xl overflow-hidden"
-               style="transform: rotate(3deg);
-                      box-shadow: 0 0 0 1px rgba(0,229,255,0.25), 0 20px 40px rgba(0,0,0,0.7);">
+          <!-- BOTTOM-RIGHT: Brownie Oreo -->
+          <div class="absolute bottom-0 right-0 w-[238px] xl:w-[268px] h-[278px] xl:h-[308px] rounded-2xl overflow-hidden"
+               style="transform: rotate(-1.5deg);
+                      box-shadow: 0 24px 48px rgba(0,0,0,0.7), 0 0 0 1px rgba(0,229,255,0.2);">
             <img
               src="/images/brownieOreo2.jpeg"
               alt="Brownie Oreo Delicias"
-              class="object-cover w-full h-full hover:scale-[1.05] transition-transform duration-700"
+              class="object-cover w-full h-full hover:scale-[1.04] transition-transform duration-700"
               loading="eager"
             />
-            <div class="absolute bottom-0 inset-x-0 h-12"
+            <div class="absolute bottom-0 inset-x-0 h-14"
                  style="background: linear-gradient(to top, rgba(7,7,16,0.6), transparent);"></div>
           </div>
 
-          <!-- Badge flotante centrado entre las dos inferiores -->
-          <div class="absolute bottom-[202px] xl:bottom-[222px] left-1/2 -translate-x-1/2 z-20
-                      inline-flex items-center gap-2 px-3.5 py-2 rounded-full text-white text-[11px] font-bold whitespace-nowrap"
+          <!-- Logo flotando sobre la pizza (top-right) -->
+          <div class="absolute top-[-16px] right-[-12px] z-20 animate-fade-in-up pointer-events-none">
+            <img
+              src="/images/logo1comb.svg"
+              alt="Café Doncar Delicias"
+              class="w-[170px] xl:w-[200px] h-auto"
+              style="filter: drop-shadow(0 0 20px rgba(0,229,255,0.45)) drop-shadow(0 0 40px rgba(180,79,255,0.25));"
+            />
+          </div>
+
+          <!-- Badge flotante -->
+          <div class="absolute bottom-[295px] xl:bottom-[325px] left-1/2 -translate-x-1/2 z-30
+                      inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-white text-[11px] font-bold whitespace-nowrap"
                style="background: rgba(7,7,16,0.9);
                       border: 1px solid rgba(0,229,255,0.35);
                       backdrop-filter: blur(12px);
