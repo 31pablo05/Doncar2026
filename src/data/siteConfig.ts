@@ -3,7 +3,7 @@ export const siteConfig = {
   tagline: 'Pizza & Food · Cosas Ricas',
   description: 'Hamburguesas artesanales, pizzas, sandwiches y postres en Trelew, Chubut. Pedidos por WhatsApp.',
   phone: '+5492804518716',
-  whatsapp: '5492804518756',
+  whatsapp: '5492804518716',
   address: 'Pellegrini 1624, Trelew, Chubut',
   instagram: 'https://www.instagram.com/cafedoncar/',
   facebook: 'https://www.facebook.com/cafedoncar',
