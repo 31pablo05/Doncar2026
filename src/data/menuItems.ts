@@ -619,6 +619,11 @@ export const menuItems: MenuItem[] = [
     price: 8000,
     category: "Postres", type: "Postres",
     image: "/placeholder.svg?text=Tiramisu" },
+  { id: 405, name: "Gelatina con Crema",
+    description: "Gelatina artesanal con crema",
+    price: 6000,
+    category: "Postres", type: "Postres",
+    image: "/placeholder.svg?text=Gelatina" },
 
   // ===================================================
   // 🥧 TARTAS — Delicias Cosas Ricas

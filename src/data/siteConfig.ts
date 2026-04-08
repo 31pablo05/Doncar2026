@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: 'Café Doncar Delicias',
-  tagline: 'Pizza & Food · Cosas Ricas',
-  description: 'Hamburguesas artesanales, pizzas, sandwiches y postres en Trelew, Chubut. Pedidos por WhatsApp.',
+  tagline: 'De lo salado a lo dulce — Todo en un solo lugar',
+  description: 'Hamburguesas, pizzas, ensaladas y postres artesanales en Trelew, Chubut. Café Doncar y Delicias Cosas Ricas juntos en Pellegrini 1624. Pedidos por WhatsApp.',
   phone: '+5492804518716',
   whatsapp: '5492804518716',
   address: 'Pellegrini 1624, Trelew, Chubut',
@@ -12,6 +12,6 @@ export const siteConfig = {
     open: 18,
     close: 0,
     closeMinutes: 30,
-    days: 'Lunes a Domingo',
+    days: 'Todos los días',
   }
 };
