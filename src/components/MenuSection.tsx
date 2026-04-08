@@ -408,12 +408,12 @@ export default function MenuSection({ menuItems, categories, whatsappNumber }: P
 
                     <div>
                       <p className="text-white/50 text-sm mb-2">Método de pago</p>
-                      <div className="flex gap-2">
+                      <div className="grid grid-cols-3 gap-1.5">
                         {['Efectivo', 'Transferencia', 'Mercado Pago'].map(method => (
                           <button
                             key={method}
                             onClick={() => setOrderForm(f => ({ ...f, payment: method }))}
-                            className="flex-1 py-2 rounded-xl text-xs font-bold transition-all"
+                            className="py-2.5 rounded-xl text-[11px] font-bold transition-all leading-tight text-center"
                             style={{
                               background: orderForm.payment === method
                                 ? 'linear-gradient(135deg, #00E5FF, #B44FFF)'
@@ -421,7 +421,10 @@ export default function MenuSection({ menuItems, categories, whatsappNumber }: P
                               color: orderForm.payment === method ? '#070710' : 'rgba(255,255,255,0.6)',
                             }}
                           >
-                            {method === 'Efectivo' ? '💵' : method === 'Transferencia' ? '🏦' : '💙'} {method}
+                            <span className="block text-base leading-none mb-0.5">
+                              {method === 'Efectivo' ? '💵' : method === 'Transferencia' ? '🏦' : '💙'}
+                            </span>
+                            {method === 'Transferencia' ? 'Transfer.' : method === 'Mercado Pago' ? 'Mercado P.' : method}
                           </button>
                         ))}
                       </div>
