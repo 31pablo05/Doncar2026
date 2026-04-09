@@ -1,5 +1,20 @@
 import { useState, useEffect } from 'react';
 
+function getIsOpen(h, m, day) {
+  const min = h * 60 + m;
+  // Sab/Dom/Lun 00:00–00:30: cierre tardío del turno noche VIER-SAB-DOM
+  if ((day === 6 || day === 0 || day === 1) && min < 30) return true;
+  // Lunes: solo noche 19:30–00:00
+  if (day === 1) return min >= 19 * 60 + 30;
+  // Mar–Jue: mediodía 11:30–14:30 + noche 19:30–00:00
+  if (day >= 2 && day <= 4)
+    return (min >= 11 * 60 + 30 && min < 14 * 60 + 30) || min >= 19 * 60 + 30;
+  // Vier–Dom: mediodía 11:30–14:30 + noche 19:30–00:30 (pasa medianoche)
+  if (day === 5 || day === 6 || day === 0)
+    return (min >= 11 * 60 + 30 && min < 14 * 60 + 30) || min >= 19 * 60 + 30;
+  return false;
+}
+
 export default function ClockWidget() {
   const [time, setTime] = useState('');
   const [isOpen, setIsOpen] = useState(false);
@@ -7,13 +22,14 @@ export default function ClockWidget() {
   useEffect(() => {
     function update() {
       const now = new Date();
-      const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
-      const arg = new Date(utcMs - (3 * 3600000));
+      const argStr = now.toLocaleString('en-US', { timeZone: 'America/Argentina/Buenos_Aires' });
+      const arg = new Date(argStr);
       const h = arg.getHours();
-      const m = String(arg.getMinutes()).padStart(2, '0');
-      const s = String(arg.getSeconds()).padStart(2, '0');
-      setTime(`${h}:${m}:${s}`);
-      setIsOpen(h >= 18 || (h === 0 && Number(m) < 30));
+      const m = arg.getMinutes();
+      const s = arg.getSeconds();
+      const day = arg.getDay();
+      setTime(`${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`);
+      setIsOpen(getIsOpen(h, m, day));
     }
     update();
     const t = setInterval(update, 1000);

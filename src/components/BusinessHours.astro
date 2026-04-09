@@ -13,17 +13,41 @@ import ClockWidget from './ClockWidget';
     <ClockWidget client:idle />
 
     <!-- Info de horarios (estático) -->
-    <div class="mt-10 grid sm:grid-cols-2 gap-6 max-w-xl mx-auto">
-      <div class="p-6 rounded-2xl border text-center" style="background: rgba(0,229,255,0.06); border-color: rgba(0,229,255,0.2);">
-        <div class="text-3xl mb-2">🕕</div>
-        <div class="font-syne font-bold text-white text-lg" style="color: #00E5FF;">18:00 — 00:30 hs</div>
-        <div class="text-white/50 text-sm mt-1">Lunes a Domingo</div>
+    <div class="mt-10 max-w-xl mx-auto space-y-4">
+
+      <!-- Lunes -->
+      <div class="p-5 rounded-2xl border flex items-center justify-between gap-4" style="background: rgba(0,229,255,0.06); border-color: rgba(0,229,255,0.2);">
+        <div class="font-syne font-bold text-white text-base w-36 shrink-0" style="color: #00E5FF;">Lunes</div>
+        <div class="text-white/70 text-sm text-right">
+          <div>19:30 — 00:00 hs</div>
+        </div>
       </div>
-      <div class="p-6 rounded-2xl border text-center" style="background: rgba(180,79,255,0.06); border-color: rgba(180,79,255,0.2);">
+
+      <!-- Mar · Mier · Jue -->
+      <div class="p-5 rounded-2xl border flex items-center justify-between gap-4" style="background: rgba(0,229,255,0.06); border-color: rgba(0,229,255,0.2);">
+        <div class="font-syne font-bold text-white text-base w-36 shrink-0" style="color: #00E5FF;">Mar · Mier · Jue</div>
+        <div class="text-white/70 text-sm text-right space-y-1">
+          <div>11:30 — 14:30 hs</div>
+          <div>19:30 — 00:00 hs</div>
+        </div>
+      </div>
+
+      <!-- Vier · Sab · Dom -->
+      <div class="p-5 rounded-2xl border flex items-center justify-between gap-4" style="background: rgba(0,229,255,0.06); border-color: rgba(0,229,255,0.2);">
+        <div class="font-syne font-bold text-white text-base w-36 shrink-0" style="color: #00E5FF;">Vier · Sab · Dom</div>
+        <div class="text-white/70 text-sm text-right space-y-1">
+          <div>11:30 — 14:30 hs</div>
+          <div>19:30 — 00:30 hs</div>
+        </div>
+      </div>
+
+      <!-- Delivery -->
+      <div class="p-5 rounded-2xl border text-center" style="background: rgba(180,79,255,0.06); border-color: rgba(180,79,255,0.2);">
         <div class="text-3xl mb-2">🚀</div>
         <div class="font-syne font-bold text-white text-lg">Delivery & Retiro</div>
         <div class="text-white/50 text-sm mt-1">Pellegrini 1624, Trelew</div>
       </div>
+
     </div>
   </div>
 </section>

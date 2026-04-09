@@ -42,20 +42,8 @@ const navLinks = [
       ))}
     </nav>
 
-    <!-- Acciones: hamburger + carrito -->
+    <!-- Acciones: carrito + hamburger -->
     <div class="flex items-center gap-3">
-
-      <!-- Hamburger (solo mobile) -->
-      <button
-        id="mobile-menu-btn"
-        class="md:hidden flex flex-col items-center justify-center gap-1.5 w-10 h-10 rounded-xl transition-all duration-200"
-        style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);"
-        aria-label="Abrir menú"
-      >
-        <span class="hamburger-bar block w-5 h-[1.5px] bg-white/70 rounded-full transition-all duration-300 origin-center"></span>
-        <span class="hamburger-bar block w-4 h-[1.5px] bg-white/50 rounded-full transition-all duration-300"></span>
-        <span class="hamburger-bar block w-5 h-[1.5px] bg-white/70 rounded-full transition-all duration-300 origin-center"></span>
-      </button>
 
       <!-- Botón carrito -->
       <button
@@ -71,6 +59,18 @@ const navLinks = [
           class="hidden absolute -top-2 -right-2 w-5 h-5 bg-white text-black text-xs font-black rounded-full items-center justify-center"
           style="box-shadow: 0 2px 8px rgba(0,0,0,0.4);"
         ></span>
+      </button>
+
+      <!-- Hamburger (solo mobile) -->
+      <button
+        id="mobile-menu-btn"
+        class="md:hidden flex flex-col items-center justify-center gap-1.5 w-10 h-10 rounded-xl transition-all duration-200"
+        style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);"
+        aria-label="Abrir menú"
+      >
+        <span class="hamburger-bar block w-5 h-[1.5px] bg-white/70 rounded-full transition-all duration-300 origin-center"></span>
+        <span class="hamburger-bar block w-4 h-[1.5px] bg-white/50 rounded-full transition-all duration-300"></span>
+        <span class="hamburger-bar block w-5 h-[1.5px] bg-white/70 rounded-full transition-all duration-300 origin-center"></span>
       </button>
 
     </div>
@@ -181,12 +181,21 @@ const navLinks = [
     const h = argTime.getHours();
     const m = argTime.getMinutes();
     const totalMin = h * 60 + m;
+    const day = argTime.getDay();
 
-    const isOpen = totalMin >= 1080 || totalMin < 30;
+    function isOpenNow(d, min) {
+      if ((d === 6 || d === 0 || d === 1) && min < 30) return true;
+      if (d === 1) return min >= 19 * 60 + 30;
+      if (d >= 2 && d <= 4) return (min >= 11 * 60 + 30 && min < 14 * 60 + 30) || min >= 19 * 60 + 30;
+      if (d === 5 || d === 6 || d === 0) return (min >= 11 * 60 + 30 && min < 14 * 60 + 30) || min >= 19 * 60 + 30;
+      return false;
+    }
+
+    const isOpen = isOpenNow(day, totalMin);
 
     bar.textContent = isOpen
       ? '🟢  Abierto ahora — Pedidos por WhatsApp'
-      : '🔴  Cerrado — Abrimos a las 18:00 hs';
+      : '🔴  Cerrado — Lun: 19:30 · Mar-Jue: 11:30 y 19:30 · Vier-Dom: 11:30 y 19:30';
     bar.style.background = isOpen ? 'rgba(0,229,255,0.12)' : 'rgba(228,64,251,0.12)';
     bar.style.color = isOpen ? '#00E5FF' : '#E040FB';
     bar.classList.remove('hidden');

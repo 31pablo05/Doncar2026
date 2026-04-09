@@ -9,9 +9,10 @@ export const siteConfig = {
   facebook: 'https://www.facebook.com/cafedoncar',
   url: 'https://cafedoncar.vercel.app',
   hours: {
-    open: 18,
-    close: 0,
-    closeMinutes: 30,
-    days: 'Todos los días',
+    schedule: [
+      { days: 'Lunes',              lunch: null,               night: '19:30 — 00:00 hs' },
+      { days: 'Mar · Mier · Jue',   lunch: '11:30 — 14:30 hs', night: '19:30 — 00:00 hs' },
+      { days: 'Vier · Sab · Dom',   lunch: '11:30 — 14:30 hs', night: '19:30 — 00:30 hs' },
+    ],
   }
 };
